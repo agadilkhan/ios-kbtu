@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="center" semanticContentAttribute="forceRightToLeft" fixedFrame="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="atc-YT-Rnb" colorLabel="IBBuiltInLabel-Red">
-                                <rect key="frame" x="163" y="307" width="67" height="240"/>
+                                <rect key="frame" x="163" y="307" width="66.666666666666686" height="240.33333333333337"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gy1-hW-gOS" colorLabel="IBBuiltInLabel-Red">
                                         <rect key="frame" x="0.3333333333333357" y="0.0" width="66.333333333333314" height="34.333333333333336"/>
