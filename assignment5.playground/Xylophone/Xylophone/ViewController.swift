@@ -1,43 +1,62 @@
-//
-//  ViewController.swift
-//  Xylophone
-//
-//  Created by Alfarabi Agadilkhan on 26.10.2024.
-//
-
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, AVAudioPlayerDelegate {
+class ViewController: UIViewController {
     
-    var audio: AVAudioPlayer?
-
+    var player: AVAudioPlayer?
+    let notes = ["C", "D", "E", "F", "G", "A", "B"]
+    let colors: [UIColor] = [.red, .orange, .yellow, .green, .blue, .purple, .systemPink]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupXylophoneButtons()
     }
-
-    @IBAction func buttonPressed(_ sender: UIButton) {
-      
-        if let selectedSound = sender.titleLabel?.text {
-            playingSound(chosenSound: selectedSound)
-        } else {
-            print("Button has no title")
+    
+    func setupXylophoneButtons() {
+        let buttonHeight = view.frame.height / CGFloat(notes.count)
+        
+        for (index, note) in notes.enumerated() {
+            let button = UIButton()
+            button.backgroundColor = colors[index]
+            button.setTitle(note, for: .normal)
+            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            
+            view.addSubview(button)
+            
+            button.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                button.leftAnchor.constraint(equalTo: view.leftAnchor),
+                button.rightAnchor.constraint(equalTo: view.rightAnchor),
+                button.topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(index) * buttonHeight),
+                button.heightAnchor.constraint(equalToConstant: buttonHeight)
+            ])
         }
     }
     
-    func playingSound(chosenSound: String) {
-        guard let url = Bundle.main.url(forResource: chosenSound, withExtension: "wav") else {
-                print("can not find sound")
-                return
+    @objc func buttonTapped(_ sender: UIButton) {
+        guard let note = sender.titleLabel?.text else { return }
+        playSound(note: note)
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            sender.alpha = 0.5
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                sender.alpha = 1.0
             }
-            
-        audio = try? AVAudioPlayer(contentsOf: url)
-        guard let player = audio else {
-            print("failed to initialize audio player")
+        }
+    }
+    
+    func playSound(note: String) {
+        guard let url = Bundle.main.url(forResource: note, withExtension: "wav") else { print("Could not find file: \(note).wav")
             return
         }
-
-        player.play()
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch {
+            print("Error playing sound: \(error.localizedDescription)")
+        }
     }
 }
-
